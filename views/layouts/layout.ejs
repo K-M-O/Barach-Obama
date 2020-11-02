@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" data-features="Web Components V0">
+        <meta name="theme-color" content="#121212">
+        <link rel="apple-touch-icon" href="/images/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+        <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+        <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link id="main-css" rel="stylesheet" href="/stylesheets/main.css">
+        <script defer src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+        <script defer src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
+        <script defer src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
+        <script defer src="https://unpkg.com/filepond/dist/filepond.js"></script>
+        <script defer src="https://kit.fontawesome.com/a81368914c.js"></script>
+        <script defer src="/javascripts/fileUploader.js"></script>
+        <script defer src="/javascripts/main.js"></script>
+        <title>Golden Home</title>
+    </head>
+    <body light>
+        <div id="app" class="light-bg">
+            <%- include('../partials/header.ejs') %>
+            <div class="scrollable light-bg" id="scrollDetect">
+                <div class="dataListener">
+                    <div class="content">
+                        <%- include('../partials/errorMessage.ejs') %>
+                        <%- include('../partials/message.ejs') %>
+                        <%- body %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

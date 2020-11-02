@@ -1,0 +1,89 @@
+a {
+    margin-right: 25px;
+}
+.manager-form .form-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: 150px;
+    max-width: 500px;
+    place-items: center start;
+}
+.delete-button{
+    height: 36px;
+    width: 80px;
+    text-align: center;
+    outline-width: 0px;
+    border-width: 0px;
+    outline-style: solid;
+    border-style: solid;
+    border-radius: 7px;
+    color: #f1f1f1;
+    font-size: medium;
+    background-color: #ff9494;
+    cursor: pointer;
+}
+.report-options{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-auto-flow: column;
+    height: 80px;
+    width: 100%;
+}
+.report-option{
+    cursor: pointer;
+}
+.report-border{
+    height: 204px;
+    width: 100%;
+    background-color: cornflowerblue;
+    display: grid;
+    place-items: center;
+    margin-bottom: 20px;
+}
+.report-row{
+    width: 98%;
+    height: 200px;
+    display: grid;
+    margin: auto;
+    margin-left: 1%;
+    grid-template-rows: auto;
+}
+.order-row{
+    width: 98%;
+    height: 200px;
+    display: grid;
+    margin: auto;
+    margin-left: 1%;
+    grid-template-rows: auto;
+    align-items: flex-start;
+}
+.report-row div{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-auto-flow: column;
+}
+.order-row div{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-auto-flow: column;
+    margin-left: 10px;
+}
+.order-row h2{
+    margin-left: 10px;
+}
+.order-row #labll{
+    margin-left: 10px;
+}
+.order-row button{
+    margin-left: 10px;
+}
+#auth-report{
+    display: none;
+}
+#product-report{
+    display: none;
+}
+#admin-report{
+    display: none;
+}

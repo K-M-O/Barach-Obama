@@ -1,0 +1,19 @@
+<% if (messages.length == 0) { %>
+    <h2 class="show-message">no messages in the Inbox</h2>
+<% } else { %>
+    <div class="inbox-form">
+            <% messages.forEach(message => { %>
+                <div class="form-row">
+                    <div class="borderable light-bg">
+                        <div class="message-head">
+                            <h2 class="message-from"><%= message.from %></h2>
+                            <% var rawDate = message.at.toString() %>
+                            <% var date = `${rawDate.split(' ')[2]} ${rawDate.split(' ')[1]} ${rawDate.split(' ')[3]} ${rawDate.split(' ')[4]}` %>
+                            <h2 class="message-date"><%= date %></h2>
+                        </div>
+                        <div><h2 class="message-content"><%= message.content %></h2></div>
+                    </div>
+                </div>
+            <% }) %>
+    </div>
+<% } %>

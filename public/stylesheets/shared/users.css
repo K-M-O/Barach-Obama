@@ -1,0 +1,63 @@
+.message-button{
+    height: 36px;
+    width: 160px;
+    text-align: center;
+    outline-width: 0px;
+    border-width: 0px;
+    outline-style: solid;
+    border-style: solid;
+    border-radius: 7px;
+    color: #f1f1f1;
+    font-size: medium;
+    background-color: cornflowerblue;
+}
+.profile-form{
+    width: 100%;
+    height: 100%;
+    display: grid;
+}
+.form-row a{
+    margin-right: 25px;
+}
+.inbox-form{
+    width: 100%;
+    height: 100%;
+    display: grid;
+}
+.inbox-form .form-row{
+    height: 200px;
+    width: 400px;
+    background-color: cornflowerblue;
+}
+.inbox-form .form-row .borderable{
+    height: 196px;
+    width: 396px;
+    border-radius: 7px;
+    margin-top: 2px;
+    margin-left: 2px;
+}
+.inbox-form .form-row .message-head{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.manage-form{
+    width: 100%;
+    display: grid;
+    grid-template-rows: 150px 150px 150px;
+}
+.manage-form .form-row{
+    max-height: 150px;
+}
+.manage-button{
+    height: 36px;
+    width: 80px;
+    text-align: center;
+    outline-width: 0px;
+    border-width: 0px;
+    outline-style: solid;
+    border-style: solid;
+    border-radius: 7px;
+    color: #f1f1f1;
+    font-size: medium;
+    background-color: cornflowerblue;
+}

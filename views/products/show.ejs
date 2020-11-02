@@ -1,0 +1,58 @@
+<div class="show-form">
+    <div class="image-slider form-row">
+        <button id="prev-btn" class="light-bg active-text"><i class="fa fa-chevron-left"></i></button>
+        <% var i = 0 %>
+        <div class="alt-0-btn main-btn press-btn"></div>
+        <% images.forEach(image => { %>
+            <% if (image.main == true) { %>
+                <img id="show" class="main alt-0" src="<%= image.imagePath %>" alt="">
+            <% } else { %>
+                <% i++ %> 
+                <img class="alt-<%= i %>" style="display: none;" src="<%= image.imagePath %>" alt="">
+                <div class="alt-<%= i %>-btn alt-btn press-btn"></div>
+            <% } %>
+        <% }) %>
+        <button id="next-btn" class="light-bg active-text"><i class="fa fa-chevron-left"></i></button>
+    </div>
+    <% if (checkAdmin !=  undefined && checkAdmin == true) { %>
+        <form action="./update" method="post">
+    <% } %>
+    <div class="form-row">
+        <label for="title">
+            title: <input class="light-input input-text" type="text" name="title" value="<%= product.title %>">
+        </label>
+    </div>
+    <div class="form-row">
+        <h2>description: </h2><textarea class="light-input input-text" name="description"><%= product.description %></textarea> 
+    </div>
+    <div class="form-row">
+        <label for="price">
+            price: <input class="light-input input-number" type="number" name="price" value="<%= product.price %>">
+        </label>
+        <label for="location">
+            location: <input class="light-input input-text" type="text" name="location" value="<%= product.location %>"> 
+        </label>
+    </div>
+    <% if (checkAdmin !=  undefined && checkAdmin == true) { %>
+            <div class="fom-row">
+                <label for="">
+                    reason: <input class="light-input input-text" type="text" name="reason" placeholder="update reason required!">
+                </label>
+                <button class="show-button" type="submit">update</button>
+            </div>
+        </form>
+        <div class="form-row">
+        <form action="./delete?_method=DELETE" method="POST">
+            <label for="">
+                reason: <input class="light-input input-text" type="text" name="reason" placeholder="delete reason required!">
+            </label>
+            <button class="delete-button" type="submit">remove</button>
+        </form>
+        </div>
+    <% } %>
+    <div class="form-row">
+        <form action="./order" method="post">
+            <button class="show-button" type="submit">order now</button>
+        </form>
+    </div>
+</div>

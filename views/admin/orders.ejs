@@ -1,0 +1,24 @@
+<% if (orders.length != 0) { %>
+    <% orders.forEach(order => { %>
+        <div class="report-border">
+            <form class="order-row light-bg" action="/u/message" method="get">
+                <h2>title : <%= order.title %> </h2>
+                <div>
+                    <label for="">orderd by: <input class="light-input input-text" type="text" name="userId" readonly value="<%= order.reportedBy %>"></label>
+                    <% var rawDate = order.reportedAt.toString() %>
+                    <% var date = `${rawDate.split(' ')[2]} ${rawDate.split(' ')[1]} ${rawDate.split(' ')[3]} ${rawDate.split(' ')[4]}` %>
+                    <h2 class="message-date"><%= date %></h2>
+                </div>
+                <label id="labll" for="">
+                    order id: 
+                    <a href="/p/<%= order.action.split(':')[1].slice(1) %>/show">
+                    <input class="light-input input-text" type="text" name="orderId" readonly value="<%= order.action.split(':')[1].slice(1) %>">
+                    </a>
+                </label>
+                <button class="message-button" type="submit">send message</button>
+            </form>
+        </div>
+    <% }) %>
+<% } else { %>
+    <h2 class="show-message">there is no orders!</h2>
+<% } %>

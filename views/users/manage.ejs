@@ -1,0 +1,20 @@
+<form class="manage-form" action="/u/manage/update" method="post">
+    <% users.forEach(user => { %>
+        <div class="form-row">
+            <label>username: <input class="light-input input-text" type="text" name="username" value="<%= user.username %>"></label>
+            <label>email: <input class="light-input input-text" type="text" name="email" value="<%= user.email %>"></label>
+        </div>
+        <div class="form-row">
+            <label>new password: <input class="light-input input-text" type="password" value="" name="password" placeholder="new password"></label>
+            <label>confirm new password: <input class="light-input input-text" type="password" value="" name="confirmPassword" placeholder="confirm password"></label>
+        </div>
+    <% }) %>
+    <div class="form-row">
+        <button class="manage-button" type="submit">update</button>
+    </div>
+</form>
+<form action="/u/manage/delete?_method=DELETE" method="post">
+    <div class="form-row">
+        <button class="manage-button" type="submit">delete</button>
+    </div>
+</form>

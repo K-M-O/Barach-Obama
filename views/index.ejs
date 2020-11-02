@@ -1,0 +1,40 @@
+<form class="light-text search-form" id="search-toggle" action="/" method="GET">
+    <div class="form-row" id="head">
+        <h2 class="search-heading">Search apartments</h2>
+    </div>
+    <div class="form-row" id="title">
+        <label>
+            Title:<input class="input-text light-input" id="title" type="text" name="title" value="<%= searchOptions.title %>">
+        </label>
+        <button class="big-search-button search-button" type="submit">Search</button>
+    </div>
+    <div class="form-row" id="double">
+        <label for="min">
+            min: <input class="input-number light-input" id="min" type="number" name="min" value="<%= searchOptions.min %>">
+        </label>
+        <label for="max">
+            max: <input class="input-number light-input"  id="max" type="number" name="max" value="<%= searchOptions.max %>">
+        </label>
+    </div>
+    <div class="form-row" id="small">
+        <button class="small-search-button search-button" type="submit">Search</button>
+    </div>
+</form>
+<br>
+<div class="apartments">
+    <% if (apartments.length == 0) { %>
+        <h2 class="show-message">There is no Apartments meet your search, please try again.</h2>
+    <% } else { %>
+        <% apartments.forEach(apartment => { %>
+            <div class="grid-apartment">
+                <% if(apartment[1] != null) { %> 
+                    <img src="<%= apartment[1].imagePath %>" alt="">
+                <% } %>
+                <div class="details">
+                    <div><h2 class="active-text"><%= apartment[0].price %>E.G</h2></div>
+                    <div><a class="light-text" href="/p/<%= apartment[0].id %>/show">view</a></div>
+                </div>
+            </div>
+        <% }) %>
+    <% } %>
+</div>

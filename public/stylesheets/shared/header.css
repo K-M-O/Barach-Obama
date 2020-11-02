@@ -1,0 +1,57 @@
+header{
+    display: grid;
+    grid-row: 1/2;
+    grid-column: 1/-1;
+    grid-template-columns: auto;
+    grid-template-rows: 1fr;
+    place-items: center;
+    background-color: cornflowerblue;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 10;
+}
+.header-logo{
+    grid-column: 1/2;
+    width: 50px;
+    height: 50px;
+    display: grid;
+    place-items: start;
+    margin-left: 10px;
+}
+a.ico{
+    display: grid;
+    width: 100%;
+    grid-column: 1/2;
+    place-items: center start;
+    margin-left: 15px;
+}
+a.txt{
+    display: grid;
+    width: 100%;
+    grid-column: 2/-1;
+    place-items: center end;
+    margin-right: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #f1f1f1;
+}
+a.txt:hover{
+    transition: 0.4s;
+    opacity: 0.75;
+}
+.header-login{
+    grid-column: 2/-1;
+    width: 50px;
+    height: 50px;
+    float: right;
+    font-weight: bold;
+    font-size: 19px;
+}
+.header-username{
+    grid-column: 2/-1;
+    width: 50px;
+    height: 50px;
+    float: right;
+    font-weight: bold;
+    font-size: 19px;
+}

@@ -1,0 +1,65 @@
+<div class="report-options">
+    <h1 id="auth-btn" class="active-text report-option">auth reports</h1>
+    <h1 id="product-btn" class="active-text report-option">apartment reports</h1>
+    <h1 id="admin-btn" class="active-text report-option">admin reports</h1>
+</div>
+<div id="auth-report">
+    <% if (authReports.length != 0) { %>
+        <% authReports.forEach(report => { %>
+                <div class="report-border">
+                    <div class="report-row light-bg">
+                        <h2>title : <%= report.title %></h2>
+                        <div>
+                            <h2>reported by: <%= report.reportedBy %></h2>
+                            <% var rawDate = report.reportedAt.toString() %>
+                            <% var date = `${rawDate.split(' ')[2]} ${rawDate.split(' ')[1]} ${rawDate.split(' ')[3]} ${rawDate.split(' ')[4]}` %>
+                            <h2 class="message-date"><%= date %></h2>
+                        </div>
+                        <h2>action : <%= report.action %></h2>
+                    </div>
+                </div>
+        <% }) %>
+    <% } else { %>
+        <h2 class="show-messgae">there is no reports!</h2>
+    <% } %>
+</div>
+<div id="product-report">
+    <% if (productReports.length != 0) { %>
+        <% productReports.forEach(report => { %>
+            <div class="report-border">
+                <div class="report-row light-bg">
+                    <h2>title : <%= report.title %></h2>
+                    <div>
+                        <h2>reported by: <%= report.reportedBy %></h2>
+                        <% var rawDate = report.reportedAt.toString() %>
+                        <% var date = `${rawDate.split(' ')[2]} ${rawDate.split(' ')[1]} ${rawDate.split(' ')[3]} ${rawDate.split(' ')[4]}` %>
+                        <h2 class="message-date"><%= date %></h2>
+                    </div>
+                    <h2>action : <%= report.action %></h2>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <h2 class="show-messgae">there is no reports!</h2>
+    <% } %>
+</div>
+<div id="admin-report">
+    <% if (adminReports.length != 0) { %>
+        <% adminReports.forEach(report => { %>
+            <div class="report-border">
+                <div class="report-row light-bg">
+                    <h2>title : <%= report.title %></h2>
+                    <div>
+                        <h2>reported by: <%= report.reportedBy %></h2>
+                        <% var rawDate = report.reportedAt.toString() %>
+                        <% var date = `${rawDate.split(' ')[2]} ${rawDate.split(' ')[1]} ${rawDate.split(' ')[3]} ${rawDate.split(' ')[4]}` %>
+                        <h2 class="message-date"><%= date %></h2>
+                    </div>
+                    <h2>action : <%= report.action %></h2>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <h2 class="show-messgae">there is no reports!</h2>
+    <% } %>
+</div>

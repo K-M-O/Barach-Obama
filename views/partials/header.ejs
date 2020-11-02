@@ -1,0 +1,8 @@
+<header>
+        <a class="ico" href="/"><img class="header-logo" src="/images/favicon.ico" alt=""></a>
+        <% if (locals.user != null) { %>
+            <a class="header-username txt" href="/u/profile"><%= locals.user %> </a>
+        <% } else { %>
+        <a class="header-login txt" href="/as/login">Login</a>
+        <% } %>
+</header>

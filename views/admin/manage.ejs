@@ -1,0 +1,26 @@
+<div class="manager-form">
+    <a class="active-text" href="/p/new">add apartment</a>
+    <% if (users.length != 0) { %>
+        <% users.forEach(user => { %>
+            <form class="form-row" action="/a/manage/<%= user.id %>/?_method=DELETE" method="post">
+                <div><h2>name: <%= user.username %></h2></div>
+                <div>
+                    <label for="">
+                        id: <input class="light-text input-text" type="text" name="userId" readonly value="<%= user.id %>">
+                    </label>
+                </div>
+                <div>
+                    <label for="">
+                        reason: <input class="light-text input-text" type="text" name="reason" placeholder="write the reason here">
+                    </label>
+                </div>
+                <div style="display: grid;grid-template-columns: 1fr 1fr;place-items: center start;">
+                    <button class="delete-button" type="submit">delete</button>
+                    <a class="active-text" href="/u/message">send message</a>
+                </div>
+            </form>
+        <% }) %>
+    <% } else { %>
+        <h2 class="show-message">there is no users!</h2>
+    <% } %>
+</div>
