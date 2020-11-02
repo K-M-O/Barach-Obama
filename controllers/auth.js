@@ -7,25 +7,25 @@ const jwt = require('jsonwebtoken')
 
 // get controllers
 
-exports.getAuthLogIn = (req,res) => {
+exports.getAuthLogIn = async (req,res) => {
     res.render('auth/login')
 }
 
-exports.getAuthSignUp = (req,res) => {
+exports.getAuthSignUp = async (req,res) => {
     res.render('auth/signup')
 }
 
-exports.getAuthToken = (req,res) => {
+exports.getAuthToken = async (req,res) => {
     res.render('auth/token')
 }
 
-exports.getAuthLogOut = (req,res) => {
+exports.getAuthLogOut = async (req,res) => {
     res.render('auth/logout')
 }
 
 // post controllers
 
-exports.postAuthLogIn = async(req,res) => {
+exports.postAuthLogIn = async (req,res) => {
     if (req.body.email == null || req.body.email == '') return res.cookie('error','email is required to login'),res.redirect('/as/login')
     if (req.body.password == null || req.body.passsword == '') return res.cookie('error','password is required to login'),res.redirect('/as/login')
     const user = await User.find({email: req.body.email}).exec()
@@ -60,7 +60,7 @@ exports.postAuthLogIn = async(req,res) => {
     })
 }
 
-exports.postAuthToken = (req,res)=>{
+exports.postAuthToken = async (req,res)=>{
     const refreshToken = req.cookies.refreshToken
     const link = req.cookies.reqlink
     if (refreshToken == null) return res.redirect('/as/login')
@@ -74,7 +74,7 @@ exports.postAuthToken = (req,res)=>{
     })
 }
 
-exports.postAuthSignUp = async(req, res) => {
+exports.postAuthSignUp = async (req, res) => {
     if ( req.body.email == null || req.body.email === '') return res.cookie('error','email is needed'),res.redirect('/as/signup')
     if ( req.body.username == null || req.body.username === '') return res.cookie('error','username is needed'),res.redirect('/as/signup')
     if ( req.body.password == null || req.body.password === '') return res.cookie('error','password is needed'),res.redirect('/as/signup')
@@ -109,7 +109,7 @@ exports.postAuthSignUp = async(req, res) => {
 
 // delete controllers.
 
-exports.deleteAuthLogOut = async(req, res)=>{
+exports.deleteAuthLogOut = async (req, res)=>{
     const user = await User.find({token: req.cookies.refreshToken}).exec()
     req.cookies.refreshToken
     if (user.length != 0){

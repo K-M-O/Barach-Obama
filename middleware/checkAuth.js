@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
-exports.token = (req,res,next)=>{
+exports.token = async (req,res,next)=>{
     if (req.cookies){
         const token = req.cookies.token
         if ( token == null ) return res.cookie('error','no authraction'),res.redirect('/')

@@ -34,7 +34,7 @@ exports.getProduct = async (req,res) => {
     }
 }
 
-exports.getNewProduct = (req, res) => {
+exports.getNewProduct = async (req, res) => {
     res.render('products/new')
 }
 

@@ -33,7 +33,7 @@ exports.getUserInbox = async(req,res) => {
     res.render('users/inbox',{messages : messages})
 }
 
-exports.getMessage = (req,res) => {
+exports.getMessage = async (req,res) => {
     res.render('users/message')
 }
 

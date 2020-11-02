@@ -5,7 +5,7 @@ const Report = require('../models/report')
 
 // controllers.
 
-exports.getAdminPanel = (req,res) => {
+exports.getAdminPanel = async (req,res) => {
     res.render('admin/adminPanel')
 }
 
@@ -30,7 +30,7 @@ exports.getAdminReports = async (req,res) => {
     })
 }
 
-exports.deleteUser = async(req,res) => {
+exports.deleteUser = async (req,res) => {
     const user = await User.findById(req.body.userId).exec()
     const report = await new Report({
         title: 'remove user',
