@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
-exports.token = async (req,res,next)=>{
+exports.token = (req,res,next)=>{
     if (req.cookies){
         const token = req.cookies.token
         if ( token == null ) return res.cookie('error','no authraction'),res.redirect('/')
@@ -17,7 +17,7 @@ exports.token = async (req,res,next)=>{
     }
 }
 exports.validDate = async(req,res,next)=>{
-    if (req.cookies) {
+    if (req.cookies.refreshToken && req.cookies.username) {
         const token = req.cookies.refreshToken
         if ( token == null) return res.cookie('error','no authraction'),res.redirect('/')
         var username = req.cookies.username

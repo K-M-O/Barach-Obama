@@ -5,7 +5,7 @@ const Image = require('../models/image')
 
 // controller.
 
-module.exports = async(req, res) => {
+exports.searchOptions = async (req, res, next) => {
     let query = Product.find().sort({ createdAt: 'desc' })
     if (req.query.title != null && req.query.title != '') {
         query = query.regex('title', new RegExp(req.query.title, 'i'))
@@ -16,9 +16,14 @@ module.exports = async(req, res) => {
     if (req.query.min != null && req.query.min != '') {
         query = query.gte('price', req.query.min)
     }
-    var apartments = []
-    try {
-        let products = await query.exec()
+    req.apartments = []
+    req.products = await query.exec()
+    next()
+}
+exports.products = (req, res) => {
+    var products = req.products
+    var apartments = req.apartments
+    if ( products.length != 0){
         products.forEach(async function(production) {
             try {
                 let cover = await Image.findOne({product: production.id,main: true}).exec()
@@ -33,8 +38,10 @@ module.exports = async(req, res) => {
                 res.redirect('/')
             }
         })
-    } catch {
-        res.cookie('error','failed to get apartments')
-        res.redirect('/')
+    } else {
+        res.render('index', {
+            apartments: apartments,
+            searchOptions: req.query
+        })
     }
 }
