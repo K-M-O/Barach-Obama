@@ -5,7 +5,7 @@ const Report = require('../models/report')
 
 // controllers.
 
-exports.getAdminPanel = async (req,res) => {
+exports.getAdminPanel = (req,res) => {
     res.render('admin/adminPanel')
 }
 

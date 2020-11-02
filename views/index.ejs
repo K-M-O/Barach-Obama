@@ -21,10 +21,10 @@
     </div>
 </form>
 <br>
-<div class="apartments">
-    <% if (apartments.length == 0) { %>
-        <h2 class="show-message">There is no Apartments meet your search, please try again.</h2>
-    <% } else { %>
+<% if (apartments.length == 0) { %>
+    <h2 class="show-message">There is no Apartments meet your search, please try again.</h2>
+<% } else { %>
+    <div class="apartments">
         <% apartments.forEach(apartment => { %>
             <div class="grid-apartment">
                 <% if(apartment[1] != null) { %> 
@@ -36,5 +36,5 @@
                 </div>
             </div>
         <% }) %>
-    <% } %>
-</div>
+    </div>
+<% } %>

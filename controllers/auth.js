@@ -7,19 +7,19 @@ const jwt = require('jsonwebtoken')
 
 // get controllers
 
-exports.getAuthLogIn = async (req,res) => {
+exports.getAuthLogIn = (req,res) => {
     res.render('auth/login')
 }
 
-exports.getAuthSignUp = async (req,res) => {
+exports.getAuthSignUp = (req,res) => {
     res.render('auth/signup')
 }
 
-exports.getAuthToken = async (req,res) => {
+exports.getAuthToken = (req,res) => {
     res.render('auth/token')
 }
 
-exports.getAuthLogOut = async (req,res) => {
+exports.getAuthLogOut = (req,res) => {
     res.render('auth/logout')
 }
 
@@ -60,7 +60,7 @@ exports.postAuthLogIn = async (req,res) => {
     })
 }
 
-exports.postAuthToken = async (req,res)=>{
+exports.postAuthToken = (req,res)=>{
     const refreshToken = req.cookies.refreshToken
     const link = req.cookies.reqlink
     if (refreshToken == null) return res.redirect('/as/login')

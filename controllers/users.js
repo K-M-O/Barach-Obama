@@ -8,17 +8,19 @@ const user = require('../models/user')
 
 // controllers.
 
-exports.getUserProfile = async(req,res) => {
-    if (req.cookies)
+exports.getUserProfile = async (req,res) => {
+    if (req.cookies.username && req.cookie.refreshToken)
     {
         const username = req.cookies.username
         const token = req.cookies.refreshToken
         const user = await User.find({ username: username, token: token}).exec()
         res.render('users/profile',{users: user})
+    } else {
+        res.redirect('/')
     }
 }
 
-exports.getUserMangae = async(req,res) => {
+exports.getUserMangae = async (req,res) => {
     if (req.cookies)
     {
         const username = req.cookies.username
@@ -28,12 +30,12 @@ exports.getUserMangae = async(req,res) => {
     }
 }
 
-exports.getUserInbox = async(req,res) => {
+exports.getUserInbox = async (req,res) => {
     const messages = await Message.find({to : `${req.cookies.username}`}).exec()
     res.render('users/inbox',{messages : messages})
 }
 
-exports.getMessage = async (req,res) => {
+exports.getMessage = (req,res) => {
     res.render('users/message')
 }
 
