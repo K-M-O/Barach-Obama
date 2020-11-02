@@ -98,8 +98,8 @@ exports.postAuthSignUpCheckEmpty = (req, res,next) => {
 }
 exports.postAuthSignUpCheckExsit = async (req, res,next) => {
     try {
-        const checkUsers = await User.find({email : req.body.email})
-        if (checkUsers.length > 0) return res.cookie('error','failed to signup, check your information and try again!'),res.redirect('/as/signup')
+        //const checkUsers = await User.find({email : req.body.email})
+        //if (checkUsers.length > 0) return res.cookie('error','failed to signup, check your information and try again!'),res.redirect('/as/signup')
         //req.encryptedPassword = await bcrypt.hash(req.body.password, 10)
         next()
     } catch {
