@@ -114,6 +114,7 @@ exports.postAuthSignUpCreateUser = async (req, res,next) => {
     password: req.encryptedPassword,
     })
     req.newUser = await user.save()
+    res.redirect('/as/login')
     next()
 }
 exports.postAuthSignUpReport = async (req, res) => {
