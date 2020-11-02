@@ -124,7 +124,7 @@ exports.postAuthSignUpReport = async (req, res) => {
             reportType: 'authReport'
         })
         const newReport = await report.save()
-        newUser.report = newReport.id
+        req.newUser.report = newReport.id
         res.redirect('/as/login')
 }
 
