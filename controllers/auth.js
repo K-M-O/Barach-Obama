@@ -94,6 +94,7 @@ exports.postAuthSignUpCheckEmpty = (req, res,next) => {
     if ( req.body.email.indexOf('@') < 0 || req.body.email.split('@')[1].indexOf('.') < 0) return res.cookie('error','email should be : example@example.com'),res.redirect('/as/signup')
     if ( req.body.password.length < 7) return res.cookie('error','password is too short'),res.redirect('/as/signup')
     if ( req.body.password !== req.body.confirmPassword) return res.cookie('error','confirm password and password dont match!'),res.redirect('/as/signup')
+    res.redirect('/as/login')
     next()
 }
 exports.postAuthSignUpCheckExsit = async (req, res,next) => {
