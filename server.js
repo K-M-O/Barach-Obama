@@ -1,7 +1,9 @@
 // modules and enviroment variables.
 
-if (process.env.NODE_ENV !== 'production') require('dotenv').config()
-
+if (process.env.NODE_ENV !== 'production') {
+    console.log('env-variables');
+    require('dotenv').config()
+}
 const express = require('express')
 const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser')

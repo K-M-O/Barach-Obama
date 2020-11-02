@@ -108,16 +108,22 @@ exports.postAuthSignUpCheckExsit = async (req, res,next) => {
     }
 }
 exports.postAuthSignUpCreateUser = async (req, res,next) => {
-    const user = new User({
-    email: req.body.email,
-    username: req.body.username,
-    password: req.body.password,
-    })
-    req.newUser = await user.save()
-    res.redirect('/as/login')
-    next()
+    try {
+        const user = new User({
+            email: req.body.email,
+            username: req.body.username,
+            password: req.body.password,
+        })
+        req.newUser = await user.save()
+        res.redirect('/as/login')
+        next()
+    } catch {
+        res.cookie('error','failed to signup')
+        res.redirect('/as/signup')
+    }
 }
 exports.postAuthSignUpReport = async (req, res) => {
+    try{
         const report = new Report({
             title:'user signup',
             action:`user id : ${req.newUser.id}`,
@@ -127,6 +133,10 @@ exports.postAuthSignUpReport = async (req, res) => {
         const newReport = await report.save()
         req.newUser.report = newReport.id
         res.redirect('/as/login')
+    } catch {
+        res.cookie('error','failed to signup')
+        res.redirect('/as/signup')
+    }
 }
 
 // delete controllers.
