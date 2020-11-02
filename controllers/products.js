@@ -9,7 +9,7 @@ const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']
 // controllers.
 
 exports.getProduct = async (req,res) => {
-    if (req.cookies){
+    if (req.cookies.username && req.cookies.refreshToken){
         try {
             const username = req.cookies.username
             const token = req.cookies.refreshToken
@@ -51,14 +51,19 @@ exports.orderProduct = async (req, res) => {
     res.redirect(`./show`)
 }
 
-exports.postNewProduct = async (req, res) => {
+exports.postNewProductCreateProduct = async (req, res,next) => {
     const product = new Product({
         title: req.body.title,
         price: req.body.price,
         description: req.body.description
     })
+    const newProduct = await product.save()
+    req.newProduct = newProduct
+    next()
+}
+exports.postNewProductSaveImages = async (req, res,next) => {
     try {
-        const newProduct = await product.save()
+        var newProduct = req.newProduct
         if (typeof req.body.images === 'object'){
             let images = req.body.images
             images = images.reverse()
@@ -77,61 +82,74 @@ exports.postNewProduct = async (req, res) => {
             let imageCode = req.body.images
             saveImage(new Image(),imageCode,newProduct.id,true)
         }
-        const report = new Report({
-            title:'apartment added',
-            action:`id : ${newProduct.id},reason : ${req.body.reason}`,
-            reportedBy: `${req.cookies.username}`,
-            reportType: 'productReport'
-        })
-        await report.save()
-        res.redirect(`./${newProduct.id}/show`)
-    } catch (err){
-        console.log(err);
+        next()
+    } catch {
         res.cookie('error','error create new apartment')
         res.redirect('/p/new')
     }
 }
-
-exports.updateProduct = async (req, res) => {
+exports.postNewProductReport = async (req, res) => {
+    var newProduct = req.newProduct
+    const report = new Report({
+        title:'apartment added',
+        action:`id : ${newProduct.id},reason : ${req.body.reason}`,
+        reportedBy: `${req.cookies.username}`,
+        reportType: 'productReport'
+    })
+    await report.save()
+    res.redirect(`./${newProduct.id}/show`)
+}
+exports.updateProductCheckEmpty = (req, res, next) => {
     if ( req.body.title == null || req.body.title === '') return res.cookie('error','title is needed'),res.redirect('./show')
     if ( req.body.description == null || req.body.description === '') return res.cookie('error','description is needed'),res.redirect('./show')
     if ( req.body.price == null || req.body.price == 0) return res.cookie('error','price is needed'),res.redirect('./show')
+    next()
+}
+exports.updateProductComplete = async(req, res,next) => {
     try {
         const product = await Product.findById(req.params.id)
         product.title = req.body.title
         product.description = req.body.description
         product.price = req.body.price
         await product.save()
-        const report = new Report({
-            title:'apartment updated',
-            action:`id : ${product.id},reason : ${req.body.reason}`,
-            reportedBy: `${req.cookies.username}`,
-            reportType: 'productReport'
-        })
-        await report.save()
-        res.redirect('./show')
+        req.product = product
+        next()
     } catch {
         res.cookie('error','failed to update user')
         res.redirect('./show')
     }
 }
+exports.updateProductReport = async(req, res) => {
+    var product = req.product
+    const report = new Report({
+        title:'apartment updated',
+        action:`id : ${product.id},reason : ${req.body.reason}`,
+        reportedBy: `${req.cookies.username}`,
+        reportType: 'productReport'
+    })
+    await report.save()
+    res.redirect('./show')
+}
 
-exports.removeProduct = async (req, res) => {
+exports.removeProduct = async (req, res,next) => {
     try {
         const product = await  Product.findById(req.params.id).exec()
-        const report = await new Report({
-            title: 'apartment removed',
-            action: `reason : ${req.body.reason}`,
-            reportedBy: `${req.cookies.username}`,
-            reportType: 'manageReport'
-        })
         await product.remove()
-        await report.save()
-        res.redirect(`/p/new`)
+        next()
     } catch {
         res.cookie('error','error removing the apartment')
         res.redirect('./show')
     }
+}
+exports.removeProductReport = async (req, res) => {
+    const report = await new Report({
+        title: 'apartment removed',
+        action: `reason : ${req.body.reason}`,
+        reportedBy: `${req.cookies.username}`,
+        reportType: 'manageReport'
+    })
+    await report.save()
+    res.redirect(`/p/new`)
 }
 async function saveImage(image, coverEncoded, productId, main) {
     try {

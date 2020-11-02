@@ -25,15 +25,23 @@ exports.getAuthLogOut = (req,res) => {
 
 // post controllers
 
-exports.postAuthLogIn = async (req,res) => {
+exports.postAuthLogInCheckEmpty = (req,res,next) => {
     if (req.body.email == null || req.body.email == '') return res.cookie('error','email is required to login'),res.redirect('/as/login')
     if (req.body.password == null || req.body.passsword == '') return res.cookie('error','password is required to login'),res.redirect('/as/login')
+    next()
+}
+exports.postAuthLogInCheckData = async(req,res,next) => {
     const user = await User.find({email: req.body.email}).exec()
     if (typeof user === 'object' || typeof user === Array){
     if (user.length != 1) return res.cookie('error','failed to login'),res.redirect('/as/login')
     } else if (user[0] == null) return res.cookie('error','failed to login'),res.redirect('/as/login')
-    if (user[0].email.indexOf('@') < 0 || user[0].email.split('@')[1].indexOf('.') < 0) return res.cookie('error','failed to login'),res.redirect('/as/login')
-    if (user[0].password.length <= 7) return res.cookie('error','failed to login'),res.redirect('/as/login')
+    if (req.body.email.indexOf('@') < 0 || req.body.email.split('@')[1].indexOf('.') < 0) return res.cookie('error','failed to login'),res.redirect('/as/login')
+    if (req.body.password.length <= 7) return res.cookie('error','failed to login'),res.redirect('/as/login')
+    req.user = user
+    next()
+}
+exports.postAuthLogInCompleted = (req,res,next) => {
+    var user = req.user
     bcrypt.compare(req.body.password, user[0].password, async(err, result)=>{
         if (err) return res.cookie('error','error while login please try again!'),res.redirect('/as/login')
         if (result) {
@@ -43,21 +51,25 @@ exports.postAuthLogIn = async (req,res) => {
             user[0].lastSeen = new Date()
             user[0].active = true
             user[0].save()
-            if (user[0].isAdmin == true){
-                const report = await new Report({
-                    title:`admin login`,
-                    action:`admin name : ${user[0].username}`,
-                    reportedBy: 'system',
-                    reportType: 'adminReport'
-                })
-                await report.save()
-            }
             res.cookie('token',`${token}`)
             res.cookie('refreshToken',`${refreshToken}`)
             res.cookie('username',`${user[0].username}`)
-            res.redirect('/')
+            next()
         } else return res.cookie('error','failed to login'),res.redirect('/as/login')
     })
+}
+exports.postAuthLogInReport = async (req,res,next) => {
+    var user = req.user
+    if (user[0].isAdmin == true){
+        const report = await new Report({
+            title:`admin login`,
+            action:`admin name : ${user[0].username}`,
+            reportedBy: 'system',
+            reportType: 'adminReport'
+        })
+        await report.save()
+    }
+    res.redirect('/')
 }
 
 exports.postAuthToken = (req,res)=>{
@@ -74,7 +86,7 @@ exports.postAuthToken = (req,res)=>{
     })
 }
 
-exports.postAuthSignUp = async (req, res) => {
+exports.postAuthSignUpCheckEmpty = (req, res,next) => {
     if ( req.body.email == null || req.body.email === '') return res.cookie('error','email is needed'),res.redirect('/as/signup')
     if ( req.body.username == null || req.body.username === '') return res.cookie('error','username is needed'),res.redirect('/as/signup')
     if ( req.body.password == null || req.body.password === '') return res.cookie('error','password is needed'),res.redirect('/as/signup')
@@ -82,29 +94,38 @@ exports.postAuthSignUp = async (req, res) => {
     if ( req.body.email.indexOf('@') < 0 || req.body.email.split('@')[1].indexOf('.') < 0) return res.cookie('error','email should be : example@example.com'),res.redirect('/as/signup')
     if ( req.body.password.length < 7) return res.cookie('error','password is too short'),res.redirect('/as/signup')
     if ( req.body.password !== req.body.confirmPassword) return res.cookie('error','confirm password and password dont match!'),res.redirect('/as/signup')
+    next()
+}
+exports.postAuthSignUpCheckExsit = async (req, res,next) => {
     try {
         const checkUsers = await User.find({email : req.body.email})
         if (checkUsers.length > 0) return res.cookie('error','failed to signup, check your information and try again!'),res.redirect('/as/signup')
-        const encryptedPassword = await bcrypt.hash(req.body.password, 16)
-        const user = new User({
-        email: req.body.email,
-        username: req.body.username,
-        password: encryptedPassword,
-        })
-        const newUser = await user.save()
+        req.encryptedPassword = await bcrypt.hash(req.body.password, 16)
+        next()
+    } catch {
+        res.cookie('error','failed to signup')
+        res.redirect('/as/signup')
+    }
+}
+exports.postAuthSignUpCreateUser = async (req, res,next) => {
+    const user = new User({
+    email: req.body.email,
+    username: req.body.username,
+    password: req.encryptedPassword,
+    })
+    req.newUser = await user.save()
+    next()
+}
+exports.postAuthSignUpReport = async (req, res) => {
         const report = new Report({
             title:'user signup',
-            action:`user id : ${newUser.id}`,
+            action:`user id : ${req.newUser.id}`,
             reportedBy: 'system',
             reportType: 'authReport'
         })
         const newReport = await report.save()
         newUser.report = newReport.id
         res.redirect('/as/login')
-    } catch {
-        res.cookie('error','failed to signup')
-        res.redirect('/as/signup')
-    }
 }
 
 // delete controllers.
@@ -115,19 +136,23 @@ exports.deleteAuthLogOut = async (req, res)=>{
     if (user.length != 0){
         user[0].token = ``;
         user[0].save()
-        if (user[0].isAdmin == true){
-            const report = await new Report({
-                title:`admin logout`,
-                action:`admin name : ${user[0].username}`,
-                reportedBy: 'system',
-                reportType: 'adminReport'
-            })
-            await report.save()
-        }
     }
+    req.user = user
     res.clearCookie('refreshToken')
     res.clearCookie('token')
     res.clearCookie('username')
+}
+exports.deleteAuthLogOutReport = async (req, res)=>{
+    var user = req.user
+    if (user[0].isAdmin == true){
+        const report = await new Report({
+            title:`admin logout`,
+            action:`admin name : ${user[0].username}`,
+            reportedBy: 'system',
+            reportType: 'adminReport'
+        })
+        await report.save()
+    }
     res.redirect('/as/login')
 }
 

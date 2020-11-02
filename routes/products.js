@@ -11,8 +11,8 @@ router.use(checkAuth.token,checkAuth.validDate)
 router.post('/:id/order', productController.orderProduct)
 
 router.get('/new', checkAdmin, productController.getNewProduct)
-router.post('/new', checkAdmin, productController.postNewProduct)
-router.post('/:id/update', checkAdmin, productController.updateProduct)
-router.delete('/:id/delete', checkAdmin, productController.removeProduct)
+router.post('/new', checkAdmin, productController.postNewProductCreateProduct, productController.postNewProductSaveImages, productController.postNewProductReport)
+router.post('/:id/update', checkAdmin, productController.updateProductCheckEmpty, productController.updateProductComplete, productController.updateProductReport)
+router.delete('/:id/delete', checkAdmin, productController.removeProduct, productController.removeProductReport)
 
 module.exports = router

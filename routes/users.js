@@ -13,9 +13,9 @@ router.get('/manage',userController.getUserMangae)
 router.get('/inbox',userController.getUserInbox)
 router.get('/message', checkAdmin, userController.getMessage)
 
-router.post('/manage/update',userController.postUserUpdate)
+router.post('/manage/update', userController.postUserUpdateCheck, userController.postUserUpdateComplete, userController.postUserUpdateReport)
 router.post('/message', checkAdmin, userController.postMessage)
 
-router.delete('/manage/delete',userController.deleteUser)
+router.delete('/manage/delete',userController.deleteUser, userController.deleteUserReport)
 
 module.exports = router
