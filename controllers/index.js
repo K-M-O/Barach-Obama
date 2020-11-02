@@ -30,6 +30,7 @@ module.exports = async(req, res) => {
                     })
                 }
             } catch {
+                res.redirect('/')
             }
         })
     } catch {

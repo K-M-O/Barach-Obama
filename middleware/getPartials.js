@@ -1,4 +1,4 @@
-module.exports = async (req,res,next) => {
+module.exports = (req,res,next) => {
     if (req.cookies) {
         const user = req.cookies.username
         const error = req.cookies.error
