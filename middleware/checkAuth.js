@@ -4,7 +4,7 @@ const User = require('../models/user')
 exports.token = (req,res,next)=>{
     if (req.cookies){
         const token = req.cookies.token
-        if ( token == null ) return res.cookie('error','no authraction'),res.redirect('/')
+        if ( token == null ) return res.cookie('error','no authraction 201'),res.redirect('/')
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user)=>{
             if (err) {
                 res.cookie('reqlink',`${req.originalUrl}`)
@@ -19,7 +19,7 @@ exports.token = (req,res,next)=>{
 exports.validDate = async(req,res,next)=>{
     if (req.cookies.refreshToken && req.cookies.username) {
         const token = req.cookies.refreshToken
-        if ( token == null) return res.cookie('error','no authraction'),res.redirect('/')
+        if ( token == null) return res.cookie('error','no authraction 202'),res.redirect('/')
         var username = req.cookies.username
         if (typeof username === 'object') username = username.username
         try {
@@ -186,7 +186,7 @@ exports.validDate = async(req,res,next)=>{
             } else return res.redirect('/as/logout')
         }
         catch {
-            res.cookie('error','no authraction'),res.redirect('/')
+            res.cookie('error','no authraction 203'),res.redirect('/')
         }
     }
 }

@@ -33,17 +33,17 @@ exports.postAuthLogInCheckEmpty = (req, res, next) => {
 exports.postAuthLogInCheckData = async(req,res,next) => {
     const user = await User.find({email: req.body.email}).exec()
     if (typeof user === 'object' || typeof user === Array){
-    if (user.length != 1) return res.cookie('error','failed to login'),res.redirect('/as/login')
-    } else if (user[0] == null) return res.cookie('error','failed to login'),res.redirect('/as/login')
-    if (req.body.email.indexOf('@') < 0 || req.body.email.split('@')[1].indexOf('.') < 0) return res.cookie('error','failed to login'),res.redirect('/as/login')
-    if (req.body.password.length <= 7) return res.cookie('error','failed to login'),res.redirect('/as/login')
+    if (user.length != 1) return res.cookie('error','failed to login 101'),res.redirect('/as/login')
+    } else if (user[0] == null) return res.cookie('error','failed to login 102'),res.redirect('/as/login')
+    if (req.body.email.indexOf('@') < 0 || req.body.email.split('@')[1].indexOf('.') < 0) return res.cookie('error','failed to login 103'),res.redirect('/as/login')
+    if (req.body.password.length <= 7) return res.cookie('error','failed to login 104'),res.redirect('/as/login')
     req.user = user
     next()
 }
 exports.postAuthLogInCompleted = (req,res,next) => {
     var user = req.user
     bcrypt.compare(req.body.password, user[0].password, async(err, result)=>{
-        if (err) return res.cookie('error','error while login please try again!'),res.redirect('/as/login')
+        if (err) return res.cookie('error','failed to login 105'),res.redirect('/as/login')
         if (result) {
             const token = genreateAccessToken({username: user[0].username})
             const refreshToken = jwt.sign({username: user[0].username}, process.env.REFRESH_TOKEN_SECRET)
@@ -57,19 +57,24 @@ exports.postAuthLogInCompleted = (req,res,next) => {
             res.redirect('/')
             req.user = user
             next()
-        } else return res.cookie('error','failed to login'),res.redirect('/as/login')
+        } else return res.cookie('error','failed to login 106'),res.redirect('/as/login')
     })
 }
 exports.postAuthLogInReport = async (req,res) => {
     var user = req.user
-    if (user[0].isAdmin == true){
-        const report = new Report({
-            title:`admin login`,
-            action:`admin name : ${user[0].username}`,
-            reportedBy: 'system',
-            reportType: 'adminReport'
-        })
-        await report.save()
+    try {
+        if (user[0].isAdmin == true){
+            const report = new Report({
+                title:`admin login`,
+                action:`admin name : ${user[0].username}`,
+                reportedBy: 'system',
+                reportType: 'adminReport'
+            })
+            await report.save()
+        }
+    } catch {
+        res.cookie('error','failed to login 107')
+        res.redirect('/as/signup')
     }
 }
 
@@ -100,12 +105,12 @@ exports.postAuthSignUpCheckEmpty = (req, res,next) => {
 exports.postAuthSignUpCheckExsit = async (req, res,next) => {
     try {
         const checkUsers = await User.find({email : req.body.email})
-        if (checkUsers.length > 0) return res.cookie('error','failed to signup, check your information and try again!'),res.redirect('/as/signup')
+        if (checkUsers.length > 0) return res.cookie('error','failed to signup 111'),res.redirect('/as/signup')
         req.encryptedPassword = await bcrypt.hash(req.body.password, 10)
         res.redirect('/as/login')
         next()
     } catch {
-        res.cookie('error','failed to signup')
+        res.cookie('error','failed to signup 112')
         res.redirect('/as/signup')
     }
 }
@@ -114,12 +119,12 @@ exports.postAuthSignUpCreateUser = async (req, res,next) => {
         const user = new User({
             email: req.body.email,
             username: req.body.username,
-            password: req.body.password,
+            password: req.encryptedPassword,
         })
         req.newUser = await user.save()
         next()
     } catch {
-        res.cookie('error','failed to signup')
+        res.cookie('error','failed to signup 113')
         res.redirect('/as/signup')
     }
 }
@@ -134,7 +139,7 @@ exports.postAuthSignUpReport = async (req, res) => {
         const newReport = await report.save()
         req.newUser.report = newReport.id
     } catch {
-        res.cookie('error','failed to signup')
+        res.cookie('error','failed to signup 114')
         res.redirect('/as/signup')
     }
 }
@@ -142,26 +147,36 @@ exports.postAuthSignUpReport = async (req, res) => {
 // delete controllers.
 
 exports.deleteAuthLogOut = async (req, res,next)=>{
-    const user = await User.find({token: req.cookies.refreshToken}).exec()
-    req.cookies.refreshToken
-    if (user.length != 0){
-        user[0].token = ``;
-        user[0].save()
+    try {
+        const user = await User.find({token: req.cookies.refreshToken}).exec()
+        req.cookies.refreshToken
+        if (user.length != 0){
+            user[0].token = ``;
+            user[0].save()
+        }
+        res.clearCookie('refreshToken')
+        res.clearCookie('token')
+        res.clearCookie('username')
+        res.redirect('/as/login')
+    } catch {
+        res.cookie('error','failed to logout 121')
+        res.redirect('/')
     }
-    res.clearCookie('refreshToken')
-    res.clearCookie('token')
-    res.clearCookie('username')
-    res.redirect('/as/login')
 }
 exports.deleteAuthLogOutReport = async (req, res)=>{
-    if (user[0].isAdmin == true){
-        const report = new Report({
-            title:`admin logout`,
-            action:`admin name : ${user[0].username}`,
-            reportedBy: 'system',
-            reportType: 'adminReport'
-        })
-        await report.save()
+    try {
+        if (user[0].isAdmin == true){
+            const report = new Report({
+                title:`admin logout`,
+                action:`admin name : ${user[0].username}`,
+                reportedBy: 'system',
+                reportType: 'adminReport'
+            })
+            await report.save()
+        }
+    } catch {
+        res.cookie('error','failed to logout 122')
+        res.redirect('/')
     }
 }
 // JWT token Genreator.

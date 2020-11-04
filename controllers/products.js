@@ -20,12 +20,12 @@ exports.getProduct = async (req,res) => {
                 const user = await User.find({ username: username, token: token}).exec()
                 params.checkAdmin = user[0].isAdmin
             } else params.checkAdmin = undefined
-            if (product == null || product == undefined) return res.cookie('error','error 301 get the apartment information, please try again!'),res.redirect('/')
+            if (product == null || product == undefined) return res.cookie('error','error get the apartment information, please try again! 101'),res.redirect('/')
             params.product = product
             params.images = images
             res.render('products/show', params)
         } catch {
-            res.cookie('error','error 302 get the apartment information, please try again!')
+            res.cookie('error','error get the apartment information, please try again! 102')
             res.redirect('/')
         }
     } else {
