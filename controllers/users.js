@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt')
 // controllers.
 
 exports.getUserProfile = async (req,res) => {
-    if (req.cookies.username && req.cookie.refreshToken)
+    if (req.cookies.username && req.cookies.refreshToken)
     {
         const username = req.cookies.username
         const token = req.cookies.refreshToken

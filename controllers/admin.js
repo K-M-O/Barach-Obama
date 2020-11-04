@@ -39,7 +39,6 @@ exports.deleteUser = async (req,res) => {
         reportType: 'authReport'
     })
     report.save()
-    console.log(user)
     user.remove()
     res.redirect('/a/adminPanel')
 }

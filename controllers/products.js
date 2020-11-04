@@ -74,8 +74,7 @@ exports.postNewProductSaveImages = async (req, res,next) => {
                     if (i == 1) checkMain = true
                     else checkMain = false
                     saveImage(new Image(),imageCode,newProduct.id,checkMain)
-                } catch(err){
-                    console.log(err)
+                } catch{
                 }
             })
         } else {

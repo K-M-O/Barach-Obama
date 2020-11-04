@@ -43,7 +43,7 @@ db.once('open', () => console.log('Connected to Mongoose'))
 
 // launch server and set ends.
 
-app.use(getPartials.error,getPartials.username,getPartials.username)
+app.use(getPartials.error, getPartials.username, getPartials.message)
 app.use('/', indexRouter)
 app.use('/as', authRouter)
 app.use('/a', adminRouter)

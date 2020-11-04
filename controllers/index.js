@@ -35,6 +35,7 @@ exports.products = (req, res) => {
                     })
                 }
             } catch {
+                res.cookie('error','error while getting apartments!')
                 res.redirect('/')
             }
         })

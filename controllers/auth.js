@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 
 // get controllers
 
-exports.getAuthLogIn = (req,res) => {
+exports.getAuthLogIn = async (req,res) => {
     res.render('auth/login')
 }
 
@@ -25,7 +25,7 @@ exports.getAuthLogOut = (req,res) => {
 
 // post controllers
 
-exports.postAuthLogInCheckEmpty = (req,res,next) => {
+exports.postAuthLogInCheckEmpty = (req, res, next) => {
     if (req.body.email == null || req.body.email == '') return res.cookie('error','email is required to login'),res.redirect('/as/login')
     if (req.body.password == null || req.body.passsword == '') return res.cookie('error','password is required to login'),res.redirect('/as/login')
     next()
@@ -54,14 +54,16 @@ exports.postAuthLogInCompleted = (req,res,next) => {
             res.cookie('token',`${token}`)
             res.cookie('refreshToken',`${refreshToken}`)
             res.cookie('username',`${user[0].username}`)
+            res.redirect('/')
+            req.user = user
             next()
         } else return res.cookie('error','failed to login'),res.redirect('/as/login')
     })
 }
-exports.postAuthLogInReport = async (req,res,next) => {
+exports.postAuthLogInReport = async (req,res) => {
     var user = req.user
     if (user[0].isAdmin == true){
-        const report = await new Report({
+        const report = new Report({
             title:`admin login`,
             action:`admin name : ${user[0].username}`,
             reportedBy: 'system',
@@ -69,7 +71,6 @@ exports.postAuthLogInReport = async (req,res,next) => {
         })
         await report.save()
     }
-    res.redirect('/')
 }
 
 exports.postAuthToken = (req,res)=>{
@@ -94,14 +95,14 @@ exports.postAuthSignUpCheckEmpty = (req, res,next) => {
     if ( req.body.email.indexOf('@') < 0 || req.body.email.split('@')[1].indexOf('.') < 0) return res.cookie('error','email should be : example@example.com'),res.redirect('/as/signup')
     if ( req.body.password.length < 7) return res.cookie('error','password is too short'),res.redirect('/as/signup')
     if ( req.body.password !== req.body.confirmPassword) return res.cookie('error','confirm password and password dont match!'),res.redirect('/as/signup')
-    res.redirect('/as/login')
     next()
 }
 exports.postAuthSignUpCheckExsit = async (req, res,next) => {
     try {
-        //const checkUsers = await User.find({email : req.body.email})
-        //if (checkUsers.length > 0) return res.cookie('error','failed to signup, check your information and try again!'),res.redirect('/as/signup')
-        //req.encryptedPassword = await bcrypt.hash(req.body.password, 10)
+        const checkUsers = await User.find({email : req.body.email})
+        if (checkUsers.length > 0) return res.cookie('error','failed to signup, check your information and try again!'),res.redirect('/as/signup')
+        req.encryptedPassword = await bcrypt.hash(req.body.password, 10)
+        res.redirect('/as/login')
         next()
     } catch {
         res.cookie('error','failed to signup')
@@ -116,7 +117,6 @@ exports.postAuthSignUpCreateUser = async (req, res,next) => {
             password: req.body.password,
         })
         req.newUser = await user.save()
-        res.redirect('/as/login')
         next()
     } catch {
         res.cookie('error','failed to signup')
@@ -133,7 +133,6 @@ exports.postAuthSignUpReport = async (req, res) => {
         })
         const newReport = await report.save()
         req.newUser.report = newReport.id
-        res.redirect('/as/login')
     } catch {
         res.cookie('error','failed to signup')
         res.redirect('/as/signup')
@@ -142,22 +141,21 @@ exports.postAuthSignUpReport = async (req, res) => {
 
 // delete controllers.
 
-exports.deleteAuthLogOut = async (req, res)=>{
+exports.deleteAuthLogOut = async (req, res,next)=>{
     const user = await User.find({token: req.cookies.refreshToken}).exec()
     req.cookies.refreshToken
     if (user.length != 0){
         user[0].token = ``;
         user[0].save()
     }
-    req.user = user
     res.clearCookie('refreshToken')
     res.clearCookie('token')
     res.clearCookie('username')
+    res.redirect('/as/login')
 }
 exports.deleteAuthLogOutReport = async (req, res)=>{
-    var user = req.user
     if (user[0].isAdmin == true){
-        const report = await new Report({
+        const report = new Report({
             title:`admin logout`,
             action:`admin name : ${user[0].username}`,
             reportedBy: 'system',
@@ -165,9 +163,7 @@ exports.deleteAuthLogOutReport = async (req, res)=>{
         })
         await report.save()
     }
-    res.redirect('/as/login')
 }
-
 // JWT token Genreator.
 
 function genreateAccessToken(user) {
