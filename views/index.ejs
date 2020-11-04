@@ -28,7 +28,7 @@
         <% apartments.forEach(apartment => { %>
             <div class="grid-apartment">
                 <% if(apartment[1] != null) { %> 
-                    <img src="<%= apartment[1].imagePath %>" alt="">
+                    <img src="<%= apartment[1].imagePath %>" alt="" width="auto" height="auto">
                 <% } %>
                 <div class="details">
                     <div><h2 class="active-text"><%= apartment[0].price %>E.G</h2></div>
