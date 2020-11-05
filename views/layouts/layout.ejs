@@ -21,6 +21,21 @@
         <title>Golden Home</title>
     </head>
     <body light>
+        <style>#google_translate_element,.skiptranslate{display:none;}body{top:0!important;}</style>
+        <div id="google_translate_element"></div>
+        <script>
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en', 
+                    includedLanguages: 'ar', 
+                    autoDisplay: false
+                }, 'google_translate_element');
+                var a = document.querySelector("#google_translate_element select");
+                a.selectedIndex=1;
+                a.dispatchEvent(new Event('change'));
+            }
+        </script>
+        <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
         <div id="app" class="light-bg">
             <%- include('../partials/header.ejs') %>
             <div class="scrollable light-bg" id="scrollDetect">

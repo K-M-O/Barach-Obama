@@ -2,6 +2,7 @@ exports.username = (req,res,next) => {
     if (req.cookies.username) {
         const user = req.cookies.username
         if (user != null) res.locals.user = user
+        res.locals.dir = 'rtl'
     }
     next()
 }
