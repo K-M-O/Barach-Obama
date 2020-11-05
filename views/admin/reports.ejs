@@ -1,9 +1,9 @@
-<div class="report-options">
-    <h1 id="auth-btn" class="active-text report-option">auth reports</h1>
-    <h1 id="product-btn" class="active-text report-option">apartment reports</h1>
+<div dir="<%= locals.dir %>" class="report-options">
+    <h1 id="auth-btn" class="active-text report-option">users reports</h1>
+    <h1 id="product-btn" class="active-text report-option">apartments reports</h1>
     <h1 id="admin-btn" class="active-text report-option">admin reports</h1>
 </div>
-<div id="auth-report">
+<div dir="<%= locals.dir %>" id="auth-report">
     <% if (authReports.length != 0) { %>
         <% authReports.forEach(report => { %>
                 <div class="report-border">
@@ -23,7 +23,7 @@
         <h2 class="show-messgae">there is no reports!</h2>
     <% } %>
 </div>
-<div id="product-report">
+<div dir="<%= locals.dir %>" id="product-report">
     <% if (productReports.length != 0) { %>
         <% productReports.forEach(report => { %>
             <div class="report-border">
@@ -43,7 +43,7 @@
         <h2 class="show-messgae">there is no reports!</h2>
     <% } %>
 </div>
-<div id="admin-report">
+<div dir="<%= locals.dir %>" id="admin-report">
     <% if (adminReports.length != 0) { %>
         <% adminReports.forEach(report => { %>
             <div class="report-border">

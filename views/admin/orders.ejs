@@ -1,6 +1,6 @@
 <% if (orders.length != 0) { %>
     <% orders.forEach(order => { %>
-        <div class="report-border">
+        <div dir="<%= locals.dir %>" class="report-border">
             <form class="order-row light-bg" action="/u/message" method="get">
                 <h2>title : <%= order.title %> </h2>
                 <div>
