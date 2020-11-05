@@ -1,4 +1,4 @@
-<form class="light-text search-form" id="search-toggle" action="/" method="GET">
+<form class="light-text search-form" dir="<%= locals.dir %>" id="search-toggle" action="/" method="GET">
     <div class="form-row" id="head">
         <h2 class="search-heading">Search apartments</h2>
     </div>
@@ -10,10 +10,10 @@
     </div>
     <div class="form-row" id="double">
         <label for="min">
-            min: <input class="input-number light-input" id="min" type="number" name="min" value="<%= searchOptions.min %>">
+            minimum: <input class="input-number light-input" id="min" type="number" name="min" value="<%= searchOptions.min %>">
         </label>
         <label for="max">
-            max: <input class="input-number light-input"  id="max" type="number" name="max" value="<%= searchOptions.max %>">
+            maximum: <input class="input-number light-input"  id="max" type="number" name="max" value="<%= searchOptions.max %>">
         </label>
     </div>
     <div class="form-row" id="small">
@@ -24,7 +24,7 @@
 <% if (apartments.length == 0) { %>
     <h2 class="show-message">There is no Apartments meet your search, please try again.</h2>
 <% } else { %>
-    <div class="apartments">
+    <div class="apartments" dir="<%= locals.dir %>">
         <% apartments.forEach(apartment => { %>
             <div class="grid-apartment">
                 <% if(apartment[1] != null) { %> 
@@ -32,7 +32,7 @@
                 <% } %>
                 <div class="details">
                     <div><h2 class="active-text"><%= apartment[0].price %>E.G</h2></div>
-                    <div><a class="light-text" href="/p/<%= apartment[0].id %>/show">view</a></div>
+                    <div><a class="light-text" href="/p/<%= apartment[0].id %>/show">details</a></div>
                 </div>
             </div>
         <% }) %>

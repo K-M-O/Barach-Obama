@@ -46,3 +46,24 @@ exports.products = (req, res) => {
         })
     }
 }
+exports.getLang = (req,res)=>{
+    res.render('selectLang')
+}
+exports.setLang = (req,res)=>{
+    switch(req.body.lang){
+        case 'en': {
+            res.cookie('lang','en')
+            res.cookie('dir','ltr')
+        }
+        break
+        case 'ar': {
+            res.cookie('lang','ar')
+            res.cookie('dir','rtl')
+        }
+        break
+        default:
+            res.redirect('/')
+        break
+    }
+    res.redirect('/')
+}

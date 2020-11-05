@@ -1,11 +1,12 @@
-<div class="profile-form">
+<div dir="<%= locals.dir %>" class="profile-form">
     <% users.forEach(user => { %>
         <div class="form-row">
             <% if (user.isAdmin == true) { %>
-                <a class="active-text" href="/a/adminPanel">Admin panel</a>
+                <a class="active-text" href="/a/adminPanel">admin's panel</a>
             <% } %>
-            <a class="active-text" href="/u/manage">Manage account</a>
-            <a class="active-text" href="/u/inbox">Inbox</a>
+            <a class="active-text" href="/u/manage">Manage-account</a>
+            <a class="active-text" href="/lang">select language</a>
+            <a class="active-text" href="/u/inbox">messeges</a>
             <a class="active-text" href="/as/logout">Logout</a>
         </div>
         <div class="form-row">

@@ -1,7 +1,7 @@
 <% if (messages.length == 0) { %>
     <h2 class="show-message">no messages in the Inbox</h2>
 <% } else { %>
-    <div class="inbox-form">
+    <div dir="<%= locals.dir %>" class="inbox-form">
             <% messages.forEach(message => { %>
                 <div class="form-row">
                     <div class="borderable light-bg">

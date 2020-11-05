@@ -1,4 +1,4 @@
-<form class="manage-form" action="/u/manage/update" method="post">
+<form dir="<%= locals.dir %>" class="manage-form" action="/u/manage/update" method="post">
     <% users.forEach(user => { %>
         <div class="form-row">
             <label>username: <input class="light-input input-text" type="text" name="username" value="<%= user.username %>"></label>

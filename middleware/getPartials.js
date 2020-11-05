@@ -25,3 +25,14 @@ exports.message = (req,res,next) => {
     }
     next()
 }
+exports.selectLang = (req,res,next) => {
+    if (req.cookies.lang) {
+        const lang = req.cookies.lang
+        const dir = req.cookies.dir
+        if (lang != null) {
+            res.locals.lang = lang
+            res.locals.dir = dir
+            next()
+        } else res.redirect('/lang')
+    } else res.cookie('lang','default'),res.redirect('/lang')
+}

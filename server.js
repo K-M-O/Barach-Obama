@@ -16,6 +16,7 @@ const app = express()
 // server routes.
 
 const indexRouter = require('./routes/index')
+const langRouter = require('./routes/selectLang')
 const authRouter = require('./routes/auth')
 const productRouter = require('./routes/products')
 const userRouter = require('./routes/users')
@@ -43,8 +44,9 @@ db.once('open', () => console.log('Connected to Mongoose'))
 
 // launch server and set ends.
 
-app.use(getPartials.error, getPartials.username, getPartials.message)
+app.use(getPartials.selectLang, getPartials.error, getPartials.username, getPartials.message)
 app.use('/', indexRouter)
+app.use('/lang', langRouter)
 app.use('/as', authRouter)
 app.use('/a', adminRouter)
 app.use('/p', productRouter)
